@@ -1,105 +1,93 @@
 <?php
 
-require_once __DIR__ . '/../config/db.php';
+class Livro {
+    private $db;
 
-
-class LivroModel
-{
-    /**
-     * Cadastra um novo livro (metadados da obra).
-     */
-    public static function insert(
-        PDO $pdo,
-        string $titulo,
-        string $autores = '',
-        string $editora = '',
-        string $edicao = '',
-        int $anoPublicacao = 0
-    ): int {
-        $sql = "INSERT INTO livros (titulo, autores, editora, edicao, ano_publicacao)
-                VALUES (:titulo, :autores, :editora, :edicao, :ano_publicacao)";
-
-        $pdo->prepare($sql)->execute([
-            ':titulo'         => $titulo,
-            ':autores'        => $autores        ?: null,
-            ':editora'        => $editora        ?: null,
-            ':edicao'         => $edicao         ?: null,
-            ':ano_publicacao' => $anoPublicacao  ?: null,
-        ]);
-
-        return (int) $pdo->lastInsertId();
+    public function __construct() {
+        $this->db = Database::getConnection();
     }
 
-    /**
-     * Retorna todos os livros ordenados pelo título.
-     */
-    public static function getAll(PDO $pdo): array
-    {
-        return $pdo->query("SELECT * FROM livros ORDER BY titulo")->fetchAll();
+    public function listarTodos() {
+        $sql = "SELECT * FROM Livro ORDER BY titulo ASC, exemplar ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    /**
-     * Busca um livro pelo ID.
-     */
-    public static function getById(PDO $pdo, int $id): array|false
-    {
-        $stmt = $pdo->prepare("SELECT * FROM livros WHERE id = :id");
+    public function listarDisponiveis() {
+        $sql = "SELECT * FROM Livro WHERE alugado = 0 ORDER BY titulo ASC, exemplar ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function buscarPorId($id) {
+        $sql = "SELECT * FROM Livro WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 
-    /**
-     * Busca livros pelo título (busca parcial).
-     */
-    public static function search(PDO $pdo, string $termo): array
-    {
-        $stmt = $pdo->prepare(
-            "SELECT * FROM livros WHERE titulo LIKE :termo ORDER BY titulo"
-        );
-        $stmt->execute([':termo' => '%' . $termo . '%']);
-        return $stmt->fetchAll();
+    public function salvar($dados, $quantidade) {
+        $sql = "INSERT INTO Livro (titulo, autores, editora, edicao, ano_publicacao, exemplar, alugado) 
+                VALUES (:titulo, :autores, :editora, :edicao, :ano_publicacao, :exemplar, 0)";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        for ($i = 1; $i <= $quantidade; $i++) {
+            $nomeExemplar = $dados['titulo'] . " – Exemplar " . $i;
+            $stmt->execute([
+                ':titulo' => $dados['titulo'],
+                ':autores' => $dados['autores'],
+                ':editora' => $dados['editora'],
+                ':edicao' => $dados['edicao'],
+                ':ano_publicacao' => $dados['ano_publicacao'],
+                ':exemplar' => $nomeExemplar
+            ]);
+        }
+        return true;
     }
 
-    /**
-     * Atualiza os dados de um livro.
-     */
-    public static function update(
-        PDO $pdo,
-        int $id,
-        string $titulo,
-        string $autores = '',
-        string $editora = '',
-        string $edicao = '',
-        int $anoPublicacao = 0
-    ): bool {
-        $stmt = $pdo->prepare(
-            "UPDATE livros
-             SET titulo         = :titulo,
-                 autores        = :autores,
-                 editora        = :editora,
-                 edicao         = :edicao,
-                 ano_publicacao = :ano_publicacao
-             WHERE id = :id"
-        );
-        $stmt->execute([
-            ':titulo'         => $titulo,
-            ':autores'        => $autores       ?: null,
-            ':editora'        => $editora       ?: null,
-            ':edicao'         => $edicao        ?: null,
-            ':ano_publicacao' => $anoPublicacao ?: null,
-            ':id'             => $id,
+    public function atualizar($id, $dados) {
+        $sql = "UPDATE Livro SET 
+                titulo = :titulo, 
+                autores = :autores, 
+                editora = :editora, 
+                edicao = :edicao, 
+                ano_publicacao = :ano_publicacao, 
+                exemplar = :exemplar, 
+                alugado = :alugado 
+                WHERE id = :id";
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':titulo' => $dados['titulo'],
+            ':autores' => $dados['autores'],
+            ':editora' => $dados['editora'],
+            ':edicao' => $dados['edicao'],
+            ':ano_publicacao' => $dados['ano_publicacao'],
+            ':exemplar' => $dados['exemplar'],
+            ':alugado' => $dados['alugado']
         ]);
-        return $stmt->rowCount() > 0;
     }
 
-    /**
-     * Remove um livro pelo ID.
-     * Falhará se houver exemplares vinculados (ON DELETE RESTRICT).
-     */
-    public static function delete(PDO $pdo, int $id): bool
-    {
-        $stmt = $pdo->prepare("DELETE FROM livros WHERE id = :id");
-        $stmt->execute([':id' => $id]);
-        return $stmt->rowCount() > 0;
+    public function excluir($id) {
+        $sql = "DELETE FROM Livro WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function pesquisarPorTitulo($titulo) {
+        $sql = "SELECT L.*, Loc.data_emprestimo, A.nome as nome_aluno, A.matricula as matricula_aluno
+                FROM Livro L
+                LEFT JOIN Locacao Loc ON L.id = Loc.id_livro AND Loc.data_devolucao IS NULL
+                LEFT JOIN Aluno A ON Loc.id_aluno = A.id
+                WHERE L.titulo LIKE :titulo
+                ORDER BY L.titulo ASC, L.exemplar ASC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':titulo' => '%' . $titulo . '%']);
+        return $stmt->fetchAll();
     }
 }

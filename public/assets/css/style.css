@@ -1,0 +1,493 @@
+/* CSS minimalista para o trabalho prático de Web 3 - Empresta SI */
+
+/* Configurações básicas de layout */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fcfcfc;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Cabeçalho */
+.main-header {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.logo-title {
+    margin: 0;
+    font-size: 28px;
+    color: #111;
+}
+
+.logo-subtitle {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Menu de Navegação */
+.main-nav {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.nav-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link {
+    color: #0066cc;
+    text-decoration: none;
+    padding: 2px 6px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    background-color: #e6f2ff;
+    border-radius: 2px;
+}
+
+.nav-divider {
+    color: #999;
+    margin: 0 2px;
+}
+
+.admin-label {
+    font-weight: bold;
+    color: #444;
+}
+
+.admin-link {
+    color: #880000;
+}
+
+.admin-link:hover {
+    background-color: #ffe6e6;
+}
+
+.logout-link {
+    color: #d9534f;
+    margin-left: auto;
+}
+
+.login-link {
+    font-weight: bold;
+}
+
+.nav-separator {
+    display: none; /* removemos a linha HR comum para usar o container flex */
+}
+
+/* Conteúdo Principal */
+.main-content {
+    min-height: 400px;
+}
+
+h2 {
+    color: #222;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-top: 0;
+}
+
+h3 {
+    color: #444;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Tabelas */
+.table-responsive {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.basic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.basic-table th {
+    background-color: #eaeaea;
+    color: #222;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+}
+
+.basic-table td {
+    padding: 10px;
+    border: 1px solid #dddddd;
+}
+
+.basic-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.basic-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-mono {
+    font-family: monospace;
+    font-size: 15px;
+}
+
+/* Formulários */
+.basic-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    max-width: 600px;
+    margin-top: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #666;
+    outline: none;
+}
+
+.form-row-double {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row-double .form-group {
+    flex: 1;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.form-help {
+    display: block;
+    font-size: 11px;
+    color: #777;
+    margin-top: 3px;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Botões */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #0066cc;
+    color: #ffffff;
+    border-color: #0052a3;
+}
+
+.btn-primary:hover {
+    background-color: #0052a3;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333333;
+    border-color: #cccccc;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-add {
+    background-color: #5cb85c;
+    color: #ffffff;
+    border-color: #4cae4c;
+    padding: 6px 12px;
+}
+
+.btn-add:hover {
+    background-color: #449d44;
+}
+
+.btn-bulk-return {
+    background-color: #f0ad4e;
+    color: #ffffff;
+    border-color: #eea236;
+    padding: 6px 12px;
+}
+
+.btn-bulk-return:hover {
+    background-color: #ec971f;
+}
+
+.btn-search {
+    background-color: #333;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+}
+
+.btn-search:hover {
+    background-color: #111;
+}
+
+.btn-action {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.btn-action.edit {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.btn-action.delete {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* Alertas de validação e status */
+.success-msg {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.error-msg {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.info-alert {
+    background-color: #d9edf7;
+    color: #31708f;
+    border: 1px solid #bce8f1;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.info-alert.error {
+    background-color: #f2dede;
+    color: #a94442;
+    border-color: #ebccd1;
+}
+
+.info-note {
+    font-size: 13px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+/* Badges e Tags */
+.badge-exemplar {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #555;
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.status-tag.disponivel {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.status-tag.alugado {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.status-tag.devolvido {
+    background-color: #eaeaea;
+    color: #777777;
+    text-transform: none;
+}
+
+.status-tag.pendente {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+}
+
+/* Seções e Cards de Passos */
+.step-card {
+    background-color: #fcfcfc;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.step-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.student-info-badge {
+    background-color: #f4f9f4;
+    border-left: 4px solid #5cb85c;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.student-info-badge p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Busca Inline */
+.form-row-search {
+    display: flex;
+    gap: 10px;
+    max-width: 500px;
+}
+
+.input-search {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Box de login */
+.admin-box {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+
+.admin-box h2 {
+    border-bottom: none;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.admin-box p {
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Rodapé */
+.main-footer {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-top: 30px;
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+}
+
+.footer-note {
+    margin-top: 5px;
+    color: #999;
+}

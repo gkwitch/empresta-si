@@ -1,88 +1,123 @@
 <?php
 
-require_once __DIR__ . '/../config/db.php';
+class Aluno {
+    private $db;
 
-
-class AlunoModel
-{
-    /**
-     * Cadastra um novo aluno.
-     */
-    public static function insert(
-        PDO $pdo,
-        string $matricula,
-        string $nomeCompleto,
-        string $email = '',
-        string $discord = '',
-        string $celular = ''
-    ): void {
-        $sql = "INSERT INTO alunos (matricula, nome_completo, email, discord, celular)
-                VALUES (:matricula, :nome_completo, :email, :discord, :celular)";
-
-        $pdo->prepare($sql)->execute([
-            ':matricula'     => $matricula,
-            ':nome_completo' => $nomeCompleto,
-            ':email'         => $email   ?: null,
-            ':discord'       => $discord ?: null,
-            ':celular'       => $celular ?: null,
-        ]);
+    public function __construct() {
+        $this->db = Database::getConnection();
     }
 
-    /**
-     * Retorna todos os alunos ordenados pelo nome.
-     */
-    public static function getAll(PDO $pdo): array
-    {
-        return $pdo->query("SELECT * FROM alunos ORDER BY nome_completo")->fetchAll();
+    public function listarTodos() {
+        $sql = "SELECT * FROM Aluno ORDER BY nome ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    /**
-     * Busca um aluno pela matrícula.
-     */
-    public static function getByMatricula(PDO $pdo, string $matricula): array|false
-    {
-        $stmt = $pdo->prepare("SELECT * FROM alunos WHERE matricula = :matricula");
+    public function buscarPorId($id) {
+        $sql = "SELECT * FROM Aluno WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch();
+    }
+
+    public function buscarPorMatricula($matricula) {
+        $sql = "SELECT * FROM Aluno WHERE matricula = :matricula";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute([':matricula' => $matricula]);
         return $stmt->fetch();
     }
 
-    /**
-     * Atualiza os dados de um aluno.
-     */
-    public static function update(
-        PDO $pdo,
-        string $matricula,
-        string $nomeCompleto,
-        string $email = '',
-        string $discord = '',
-        string $celular = ''
-    ): bool {
-        $stmt = $pdo->prepare(
-            "UPDATE alunos
-             SET nome_completo = :nome_completo,
-                 email         = :email,
-                 discord       = :discord,
-                 celular       = :celular
-             WHERE matricula = :matricula"
-        );
-        $stmt->execute([
-            ':nome_completo' => $nomeCompleto,
-            ':email'         => $email   ?: null,
-            ':discord'       => $discord ?: null,
-            ':celular'       => $celular ?: null,
-            ':matricula'     => $matricula,
-        ]);
-        return $stmt->rowCount() > 0;
+
+    public function buscarPorUsuario($usuario) {
+        $sql = "SELECT * FROM Aluno WHERE usuario = :usuario";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':usuario' => $usuario]);
+        return $stmt->fetch();
     }
 
-    /**
-     * Remove um aluno pela matrícula.
-     * Falhará se o aluno tiver empréstimos registrados (ON DELETE RESTRICT).
-     */
-    public static function delete(PDO $pdo, string $matricula): bool
-    {
-        $stmt = $pdo->prepare("DELETE FROM alunos WHERE matricula = :matricula");
-        $stmt->execute([':matricula' => $matricula]);
-        return $stmt->rowCount() > 0;
+
+    public function buscarPorEmail($email) {
+        $sql = "SELECT * FROM Aluno WHERE email = :email";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch();
+    }
+
+    public function salvar($dados) {
+        $sql = "INSERT INTO Aluno (nome, usuario, senha, matricula, usuario_discord, email, celular, gestor) 
+                VALUES (:nome, :usuario, :senha, :matricula, :usuario_discord, :email, :celular, :gestor)";
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':nome' => $dados['nome'],
+            ':usuario' => $dados['usuario'],
+            ':senha' => $dados['senha'], 
+            ':matricula' => $dados['matricula'],
+            ':usuario_discord' => $dados['usuario_discord'] ?: null,
+            ':email' => $dados['email'],
+            ':celular' => $dados['celular'] ?: null,
+            ':gestor' => $dados['gestor']
+        ]);
+    }
+
+
+    public function atualizar($id, $dados) {
+        if (!empty($dados['senha'])) {
+            $sql = "UPDATE Aluno SET 
+                    nome = :nome, 
+                    usuario = :usuario, 
+                    senha = :senha, 
+                    usuario_discord = :usuario_discord, 
+                    email = :email, 
+                    celular = :celular, 
+                    gestor = :gestor 
+                    WHERE id = :id";
+            $params = [
+                ':id' => $id,
+                ':nome' => $dados['nome'],
+                ':usuario' => $dados['usuario'],
+                ':senha' => $dados['senha'],
+                ':usuario_discord' => $dados['usuario_discord'] ?: null,
+                ':email' => $dados['email'],
+                ':celular' => $dados['celular'] ?: null,
+                ':gestor' => $dados['gestor']
+            ];
+        } else {
+            $sql = "UPDATE Aluno SET 
+                    nome = :nome, 
+                    usuario = :usuario, 
+                    usuario_discord = :usuario_discord, 
+                    email = :email, 
+                    celular = :celular, 
+                    gestor = :gestor 
+                    WHERE id = :id";
+            $params = [
+                ':id' => $id,
+                ':nome' => $dados['nome'],
+                ':usuario' => $dados['usuario'],
+                ':usuario_discord' => $dados['usuario_discord'] ?: null,
+                ':email' => $dados['email'],
+                ':celular' => $dados['celular'] ?: null,
+                ':gestor' => $dados['gestor']
+            ];
+        }
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute($params);
+    }
+
+    public function excluir($id) {
+        $sql = "DELETE FROM Aluno WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function temLocacaoAtiva($id) {
+        $sql = "SELECT COUNT(*) as total FROM Locacao WHERE id_aluno = :id_aluno AND data_devolucao IS NULL";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_aluno' => $id]);
+        $row = $stmt->fetch();
+        return $row['total'] > 0;
     }
 }
