@@ -105,16 +105,11 @@ Os serviços Apache e MySQL devem iniciar com mensagens `ok`.
 
 ### 🔗 Passo 2 — Criar o Atalho do Projeto
 
-O XAMPP serve arquivos a partir de `/opt/lampp/htdocs`. Crie um link simbólico para a sua pasta de desenvolvimento:
+O XAMPP serve arquivos a partir de `/opt/lampp/htdocs`. mova o seu projeto para essa pasta htdocs ou ja clone direto nela
 
 ```bash
-sudo ln -s ~/Project/empresta-si /opt/lampp/htdocs/empresta-si
+ para clonar faça um git clone https://github.com/gkwitch/empresta-si.git dentro da raiz - /opt/lampp/htdocs/
 ```
-ou
-```bash
- o mais "fácil" é clonar o repositório direto fazendo um  git clone https://github.com/gkwitch/empresta-si.git dentro da raiz - /opt/lampp/htdocs/
-```
-
 ---
 
 ### 🗄️ Passo 3 — Subir o Banco de Dados
