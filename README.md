@@ -145,7 +145,7 @@ Pronto acesso ao sistema.
 Este projeto foi desenvolvido em grupo pelos seguintes alunos do curso de Bacharelado em Sistemas de Informação:
 
 * **Arthur Herbert**
-* **Gleyce Kethelin Oliveira**
+* **Gleicy Kethelin Oliveira**
 * **Maria Luisa de Lemos**
 * **Nathan Teixeira de Oliveira**
 
