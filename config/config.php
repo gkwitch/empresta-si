@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Configurações gerais
-define('BASE_URL', 'http://localhost/empresta_si/public/');
+define('BASE_URL', 'http://localhost/empresta-si/public/');
 
 // Configurações do Banco de Dados
 define('DB_HOST', '127.0.0.1');
