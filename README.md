@@ -7,7 +7,7 @@
 
 ---
 
-Projeto prático desenvolvido para a disciplina de **Web 3** do curso de Bacharelado em Sistemas de Informação da **Universidade Federal Rural do Rio de Janeiro (UFRRJ)**.
+Projeto prático desenvolvido para a disciplina de **Web 1** do curso de Bacharelado em Sistemas de Informação da **Universidade Federal Rural do Rio de Janeiro (UFRRJ)**.
 
 O sistema tem como objetivo informatizar e gerenciar o empréstimo de livros do espaço acadêmico (sala de convivência) dos estudantes.
 
